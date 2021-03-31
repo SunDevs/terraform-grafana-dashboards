@@ -4,6 +4,10 @@ locals {
   LIST_SUBCOMPONENT = setproduct(var.SUBCOMPONENT, var.WIDGET_SUBCOMPONENT)
   LIST_STATE        = setproduct(var.STATE, var.WIDGET_STATE)
 
+  ID_API = 3
+  ID_LAM = 30
+  ID_STM = 70
+
   source_dashboard = local.source_body
 
   source_body = jsondecode(templatefile(var.DASHBOARD, {
@@ -25,7 +29,7 @@ locals {
 
   source_row_subcomponent = [
 
-     jsondecode(templatefile("./widgets/panel-row.tmpl", {
+    jsondecode(templatefile("./widgets/panel-row.tmpl", {
       TITLE  = "LAMBDA",
       ID     = 25,
       X      = 0,
@@ -51,6 +55,7 @@ locals {
       REGION     = var.REGION,
       RESOURCE   = local.LIST_COMPONENT[INDEX][0],
       DATASOURCE = var.DATASOURCE,
+      ID         = sum([local.ID_API, INDEX]),
       X          = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0,
       Y          = 0
     }))
@@ -64,6 +69,7 @@ locals {
       REGION     = var.REGION,
       DATASOURCE = var.DATASOURCE,
       RESOURCE   = local.LIST_SUBCOMPONENT[INDEX][0],
+      ID         = sum([local.ID_LAM, INDEX]),
       X          = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0,
       Y          = 12
     }))
@@ -78,6 +84,7 @@ locals {
       ACCOUNT    = var.ACCOUNT,
       DATASOURCE = var.DATASOURCE,
       RESOURCE   = local.LIST_STATE[INDEX][0],
+      ID         = sum([local.ID_STM, INDEX]),
       X          = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0,
       Y          = 12
     }))
