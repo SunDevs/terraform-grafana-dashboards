@@ -11,16 +11,48 @@ locals {
     PANELS    = jsonencode(local.source_panels)
   }))
 
-  source_panels = concat(local.source_component, local.source_subcomponent, local.source_state)
+  source_panels = concat(local.source_row_component, local.source_row_subcomponent, local.source_row_state)
+
+  source_row_component = [
+    jsondecode(templatefile("./widgets/panel-row.tmpl", {
+      TITLE  = "APIGATEWAY",
+      ID     = 23,
+      X      = 0,
+      Y      = 0,
+      PANELS = jsonencode(local.source_component)
+    }))
+  ]
+
+  source_row_subcomponent = [
+
+     jsondecode(templatefile("./widgets/panel-row.tmpl", {
+      TITLE  = "LAMBDA",
+      ID     = 25,
+      X      = 0,
+      Y      = 1,
+      PANELS = jsonencode(local.source_subcomponent)
+    }))
+  ]
+
+  source_row_state = [
+    jsondecode(templatefile("./widgets/panel-row.tmpl", {
+      TITLE  = "STATEMACHINE",
+      ID     = 27,
+      X      = 0,
+      Y      = 2,
+      PANELS = jsonencode(local.source_state)
+    }))
+  ]
 
   source_component = [
 
     for INDEX in range(0, length(local.LIST_COMPONENT)) :
     jsondecode(templatefile(local.LIST_COMPONENT[INDEX][1], {
-      REGION   = var.REGION,
-      RESOURCE = local.LIST_COMPONENT[INDEX][0]
-      X        = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0
-      Y        = 0
+      REGION     = var.REGION,
+      RESOURCE   = local.LIST_COMPONENT[INDEX][0],
+      DATASOURCE = var.DATASOURCE,
+      X          = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0,
+      Y          = 0
     }))
 
   ]
@@ -29,10 +61,11 @@ locals {
 
     for INDEX in range(0, length(local.LIST_SUBCOMPONENT)) :
     jsondecode(templatefile(local.LIST_SUBCOMPONENT[INDEX][1], {
-      REGION   = var.REGION,
-      RESOURCE = local.LIST_SUBCOMPONENT[INDEX][0]
-      X        = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0
-      Y        = 12
+      REGION     = var.REGION,
+      DATASOURCE = var.DATASOURCE,
+      RESOURCE   = local.LIST_SUBCOMPONENT[INDEX][0],
+      X          = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0,
+      Y          = 12
     }))
 
   ]
@@ -41,11 +74,12 @@ locals {
 
     for INDEX in range(0, length(local.LIST_STATE)) :
     jsondecode(templatefile(local.LIST_STATE[INDEX][1], {
-      REGION   = var.REGION,
-      ACCOUNT  = var.ACCOUNT,
-      RESOURCE = local.LIST_STATE[INDEX][0]
-      X        = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0
-      Y        = 12
+      REGION     = var.REGION,
+      ACCOUNT    = var.ACCOUNT,
+      DATASOURCE = var.DATASOURCE,
+      RESOURCE   = local.LIST_STATE[INDEX][0],
+      X          = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0,
+      Y          = 12
     }))
   ]
 }
@@ -53,5 +87,5 @@ locals {
 resource "grafana_dashboard" "main" {
   config_json = jsonencode(local.source_dashboard)
   //config_json = "${file("widgets/dashboard-grafana.json")}"
-  folder     = var.FOLDER
+  folder = var.FOLDER
 }
