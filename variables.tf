@@ -14,6 +14,10 @@ variable "FOLDER" {
   type = number
 }
 
+variable "DATASOURCE" {
+  type = string
+}
+
 variable "ACCOUNT" {
   type = string
   default = "account"
