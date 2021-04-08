@@ -1,0 +1,195 @@
+{
+  "alert": {
+    "alertRuleTags": {
+      "SEVERITY": "PAGE"
+    },
+    "conditions": [
+      {
+        "evaluator": {
+          "params": [
+            0.0144
+          ],
+          "type": "gt"
+        },
+        "operator": {
+          "type": "and"
+        },
+        "query": {
+          "params": [
+            "rate1Hour",
+            "1h",
+            "now"
+          ]
+        },
+        "reducer": {
+          "params": [],
+          "type": "sum"
+        },
+        "type": "query"
+      },
+      {
+        "evaluator": {
+          "params": [
+            0.006
+          ],
+          "type": "gt"
+        },
+        "operator": {
+          "type": "or"
+        },
+        "query": {
+          "params": [
+            "Rate6Hour",
+            "6h",
+            "now"
+          ]
+        },
+        "reducer": {
+          "params": [],
+          "type": "sum"
+        },
+        "type": "query"
+      }
+    ],
+    "executionErrorState": "keep_state",
+    "for": "5m",
+    "frequency": "1m",
+    "handler": 1,
+    "message": "Slo budget consumed in 1 or 6 hour exceeded the limit in Apigateway ${RESOURCE}",
+    "name": "Availability/${RESOURCE} alert ${ID}",
+    "noDataState": "no_data",
+    "notifications": [
+      {
+        "uid": "${UID}"
+      }
+    ]
+  },
+  "aliasColors": {},
+  "dashLength": 10,
+  "datasource": "Caferio",
+  "description": "Display Error Rate for an ApiGateway and also alert about burn rate in 1or 6 hours",
+  "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+  },
+  "fill": 1,
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "legend": {
+    "avg": false,
+    "current": false,
+    "max": false,
+    "min": false,
+    "show": true,
+    "total": false,
+    "values": false
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "alertThreshold": true
+  },
+  "pluginVersion": "7.5.3",
+  "pointradius": 2,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"5XXError\" ', 'Sum', 3600))) /   SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"Count\" ', 'Sum', 3600)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Error Rate 1 Hour",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": false,
+      "refId": "rate1Hour"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"5XXError\" ', 'Sum', 21600))) /   SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"Count\" ', 'Sum', 21600)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Error Rate 6 Hour",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": false,
+      "refId": "Rate6Hour"
+    }
+  ],
+  "thresholds": [
+    {
+      "value": 0.0144,
+      "op": "gt",
+      "visible": true,
+      "fill": true,
+      "line": true,
+      "colorMode": "critical"
+    }
+  ],
+  "timeRegions": [],
+  "title": "ErrorRatePage/${RESOURCE}",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    },
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "bars": false,
+  "dashes": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "maxDataPoints": null,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null
+}

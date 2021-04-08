@@ -1,0 +1,159 @@
+{
+  "aliasColors": {},
+  "bars": false,
+  "dashLength": 10,
+  "dashes": false,
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {
+      "custom": {}
+    },
+    "overrides": []
+  },
+  "fill": 1,
+  "fillGradient": 0,
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "hiddenSeries": false,
+  "id": ${ID},
+  "legend": {
+    "avg": false,
+    "current": false,
+    "max": false,
+    "min": false,
+    "show": true,
+    "total": false,
+    "values": false
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "alertThreshold": true
+  },
+  "percentage": false,
+  "pluginVersion": "7.4.5",
+  "pointradius": 2,
+  "points": false,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "stack": false,
+  "steppedLine": false,
+  "targets": [
+    {
+      "alias": "count",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "expression": "",
+      "hide": true,
+      "id": "count",
+      "matchExact": true,
+      "metricName": "Count",
+      "namespace": "AWS/ApiGateway",
+      "period": "",
+      "queryType": "randomWalk",
+      "refId": "count",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    },
+    {
+      "alias": "error",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "expression": "",
+      "hide": true,
+      "id": "error",
+      "matchExact": true,
+      "metricName": "5XXError",
+      "namespace": "AWS/ApiGateway",
+      "period": "",
+      "queryType": "randomWalk",
+      "refId": "error",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    },
+    {
+      "alias": "budget",
+      "dimensions": {},
+      "expression": "(count * 0.1) / 100",
+      "hide": true,
+      "id": "budget",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "",
+      "period": "",
+      "refId": "budget",
+      "region": "${REGION}",
+      "statistics": [
+        "Average"
+      ]
+    },
+    {
+      "alias": "Remaining Budget",
+      "dimensions": {},
+      "expression": "100-( error*100 ) / budget",
+      "hide": false,
+      "id": "remaining",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "",
+      "period": "",
+      "refId": "remainingBudget",
+      "region": "${REGION}",
+      "statistics": [
+        "Average"
+      ]
+    }
+  ],
+  "thresholds": [],
+  "timeFrom": null,
+  "timeRegions": [],
+  "timeShift": null,
+  "title": "RemainingBudget/${RESOURCE}",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    },
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  }
+}
