@@ -1,25 +1,3 @@
-# Terraform Grafana Dashboards Module
-
-Terraform Grafana Dashboards is a module for creation of dashboards and panels in grafana.
-
-## Provision Instructions
-
-Copy and paste into your Terraform configuration the folder **example** , insert the variables, and run **terraform init**:
-
-The folder **example** contains:
-
-```
-- example
-    - widgets
-        - List of differents templates including dashboard-grafana.tmpl and panel-row.tmpl
-    - example.tf
-```
-
-
-
-
-```bash
-
 module "dashboard-grafana" {
   source       = "SunDevs/dashboard/grafana"
   version      = "1.0.x"
@@ -52,5 +30,3 @@ module "dashboard-grafana" {
     "./widgets/state-correctness-number.tmpl",
   ]
 }
-
-```

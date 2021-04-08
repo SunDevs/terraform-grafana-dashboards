@@ -1,0 +1,157 @@
+{
+  "alert": {
+    "alertRuleTags": {
+      "SEVERITY": "TICKET"
+    },
+    "conditions": [
+      {
+        "evaluator": {
+          "params": [
+            0.001
+          ],
+          "type": "gt"
+        },
+        "operator": {
+          "type": "and"
+        },
+        "query": {
+          "params": [
+            "rate36Hour",
+            "36h",
+            "now"
+          ]
+        },
+        "reducer": {
+          "params": [],
+          "type": "sum"
+        },
+        "type": "query"
+      }
+    ],
+    "executionErrorState": "alerting",
+    "for": "5m",
+    "frequency": "1m",
+    "handler": 1,
+    "message": "Slo budget consumed in 3 days exceeded the limit in Lambda ${RESOURCE}",
+    "name": "Availability/${RESOURCE} alert ${ID}",
+    "noDataState": "no_data",
+    "notifications": [
+      {
+        "uid": "${UID}"
+      }
+    ]
+  },
+  "bars": false,
+  "dashLength": 10,
+  "dashes": false,
+  "datasource": "${DATASOURCE}",
+  "description": "Display error rate for lambda ${RESOURCE} and also alert about burn rate in 3 days",
+  "fieldConfig": {
+    "defaults": {
+      "unit": "short"
+    },
+    "overrides": []
+  },
+  "fill": 1,
+  "fillGradient": 0,
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "hiddenSeries": false,
+  "id": ${ID},
+  "legend": {
+    "avg": false,
+    "current": false,
+    "max": false,
+    "min": false,
+    "show": true,
+    "total": false,
+    "values": false
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "alertThreshold": true
+  },
+  "percentage": false,
+  "pluginVersion": "7.5.3",
+  "pointradius": 2,
+  "points": false,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "stack": false,
+  "steppedLine": false,
+  "targets": [
+    {
+      "alias": "Error Rate 36 Hour",
+      "dimensions": {},
+      "expression": "SUM(SEARCH('{AWS/Lambda,FunctionName} FunctionName=\"${RESOURCE}\" MetricName=\"Errors\"', 'Sum',  129600)) /  SUM(SEARCH('{AWS/Lambda,FunctionName} FunctionName=\"${RESOURCE}\" MetricName=\"Invocations\"', 'Sum',  129600))",
+      "hide": false,
+      "id": "rate36hour",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "",
+      "period": "",
+      "refId": "rate36Hour",
+      "region": "us-west-1",
+      "statistics": [
+        "Average"
+      ]
+    }
+  ],
+  "thresholds": [
+    {
+      "value": 0.001,
+      "op": "gt",
+      "visible": true,
+      "fill": true,
+      "line": true,
+      "colorMode": "critical"
+    }
+  ],
+  "timeFrom": null,
+  "timeRegions": [],
+  "timeShift": null,
+  "title": "ErrorRate/${RESOURCE}",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    },
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "aliasColors": {}
+}

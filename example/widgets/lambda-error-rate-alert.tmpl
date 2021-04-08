@@ -1,0 +1,235 @@
+{
+  "alert": {
+    "alertRuleTags": {
+      "SEVERITY": "PAGE"
+    },
+    "conditions": [
+      {
+        "evaluator": {
+          "params": [
+            0.0144
+          ],
+          "type": "gt"
+        },
+        "operator": {
+          "type": "and"
+        },
+        "query": {
+          "params": [
+            "rate1Hour",
+            "1h",
+            "now"
+          ]
+        },
+        "reducer": {
+          "params": [],
+          "type": "sum"
+        },
+        "type": "query"
+      },
+      {
+        "evaluator": {
+          "params": [
+            0.006
+          ],
+          "type": "gt"
+        },
+        "operator": {
+          "type": "or"
+        },
+        "query": {
+          "params": [
+            "rate6Hour",
+            "6h",
+            "now"
+          ]
+        },
+        "reducer": {
+          "params": [],
+          "type": "sum"
+        },
+        "type": "query"
+      }
+    ],
+    "executionErrorState": "alerting",
+    "for": "5m",
+    "frequency": "1m",
+    "handler": 1,
+    "message": "Slo budget consumed in 1 our 0r 6 hour exceeded the limit in Lambda ${RESOURCE}",
+    "name": "Availability/${RESOURCE} alert ${ID}",
+    "noDataState": "no_data",
+    "notifications": [
+      {
+        "uid": "${UID}"
+      }
+    ]
+  },
+  "aliasColors": {
+    "Rate 1 Hour": "dark-blue",
+    "Rate 6 Hours": "dark-orange"
+  },
+  "dashLength": 10,
+  "datasource": "Caferio",
+  "description": "Display Availability for lambda ${RESOURCE} and also alert about burn rate in 1 hour or 6 hours",
+  "fieldConfig": {
+    "defaults": {
+      "unit": "short"
+    },
+    "overrides": []
+  },
+  "fill": 1,
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "legend": {
+    "avg": false,
+    "current": false,
+    "max": false,
+    "min": false,
+    "show": true,
+    "total": false,
+    "values": false
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "alertThreshold": true
+  },
+  "pluginVersion": "7.5.3",
+  "pointradius": 2,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "Errors",
+      "expression": "",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "errors",
+      "alias": "errors",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "errors"
+    },
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "Invocations",
+      "expression": "",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "invocations",
+      "alias": "invocations",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "invocations"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(SEARCH('{AWS/Lambda,FunctionName} FunctionName=\"${RESOURCE}\" MetricName=\"Errors\"', 'Sum',  300)) /  SUM(SEARCH('{AWS/Lambda,FunctionName} FunctionName=\"${RESOURCE}\" MetricName=\"Invocations\"', 'Sum',  300))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Rate 1 Hour",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "rate1Hour"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(SEARCH('{AWS/Lambda,FunctionName} FunctionName=\"${RESOURCE}\" MetricName=\"Errors\"', 'Sum',  21600)) /  SUM(SEARCH('{AWS/Lambda,FunctionName} FunctionName=\"${RESOURCE}\" MetricName=\"Invocations\"', 'Sum',  21600))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Rate 6 Hours",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "rate6Hour"
+    }
+  ],
+  "thresholds": [
+    {
+      "value": 0.0144,
+      "op": "gt",
+      "visible": true,
+      "fill": true,
+      "line": true,
+      "colorMode": "critical"
+    }
+  ],
+  "timeRegions": [],
+  "title": "Availability/${RESOURCE}",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    },
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "bars": false,
+  "dashes": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null
+}

@@ -4,9 +4,9 @@ locals {
   LIST_SUBCOMPONENT = setproduct(var.SUBCOMPONENT, var.WIDGET_SUBCOMPONENT)
   LIST_STATE        = setproduct(var.STATE, var.WIDGET_STATE)
 
-  ID_API = 3
+  ID_API = 1
   ID_LAM = 30
-  ID_STM = 70
+  ID_STM = 80
 
   source_dashboard = local.source_body
 
@@ -18,7 +18,7 @@ locals {
   source_panels = concat(local.source_row_component, local.source_row_subcomponent, local.source_row_state)
 
   source_row_component = [
-    jsondecode(templatefile("./widgets/panel-row.tmpl", {
+    jsondecode(templatefile(var.PANEL, {
       TITLE  = "APIGATEWAY",
       ID     = 23,
       X      = 0,
@@ -56,6 +56,7 @@ locals {
       RESOURCE   = local.LIST_COMPONENT[INDEX][0],
       DATASOURCE = var.DATASOURCE,
       ID         = sum([local.ID_API, INDEX]),
+      UID        = var.UID,
       X          = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0,
       Y          = 0
     }))
@@ -70,6 +71,7 @@ locals {
       DATASOURCE = var.DATASOURCE,
       RESOURCE   = local.LIST_SUBCOMPONENT[INDEX][0],
       ID         = sum([local.ID_LAM, INDEX]),
+      UID        = var.UID,
       X          = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0,
       Y          = 12
     }))
@@ -85,6 +87,7 @@ locals {
       DATASOURCE = var.DATASOURCE,
       RESOURCE   = local.LIST_STATE[INDEX][0],
       ID         = sum([local.ID_STM, INDEX]),
+      UID        = var.UID,
       X          = (INDEX + 1) % 3 == 0 ? 16 : (INDEX + 1) % 2 == 0 ? 8 : 0,
       Y          = 12
     }))
@@ -93,6 +96,5 @@ locals {
 
 resource "grafana_dashboard" "main" {
   config_json = jsonencode(local.source_dashboard)
-  //config_json = "${file("widgets/dashboard-grafana.json")}"
   folder = var.FOLDER
 }
