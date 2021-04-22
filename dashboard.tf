@@ -11,7 +11,7 @@ locals {
   source_dashboard = local.source_body
 
   source_body = jsondecode(templatefile(var.DASHBOARD, {
-    COMPONENT = var.COMPONENT,
+    COMPONENT = "${var.COMPONENT}-${var.FOLDER}",
     PANELS    = jsonencode(local.source_panels)
   }))
 
