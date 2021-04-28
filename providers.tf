@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "grafana" {
-  url    = var.PROVIDER_URL
-  auth   = var.PROVIDER_KEY
-  org_id = var.PROVIDER_ORG
+  url    = var.GRAFANA_URL
+  auth   = var.GRAFANA_AUTH
+  org_id = var.GRAFANA_ORG_ID
 }

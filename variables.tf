@@ -1,14 +1,14 @@
-variable "PROVIDER_URL" {
+variable "GRAFANA_URL" {
   type        = string
   description = "The root URL of a Grafana server. 'https://example.grafana.net/' "
 }
 
-variable "PROVIDER_KEY" {
+variable "GRAFANA_AUTH" {
   type        = string
   description = "The secret key to use to access the data source."
 }
 
-variable "PROVIDER_ORG" {
+variable "GRAFANA_ORG_ID" {
   type        = number
   description = "The organization id to operate on within grafana. Default is 1."
 }
