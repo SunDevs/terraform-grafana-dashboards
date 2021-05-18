@@ -19,7 +19,8 @@ locals {
 
   source_body = jsondecode(templatefile("${path.module}/${var.DASHBOARD}", {
     COMPONENT = "${var.COMPONENT}-${var.FOLDER}",
-    PANELS    = jsonencode(local.source_panels)
+    PANELS    = jsonencode(local.source_panels),
+    SLO       = var.SLO
   }))
 
   source_panels = concat(local.source_row_component, local.source_row_subcomponent, local.source_row_state)
