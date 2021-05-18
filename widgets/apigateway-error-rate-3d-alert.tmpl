@@ -1,13 +1,13 @@
 {
   "alert": {
     "alertRuleTags": {
-      "SEVERITY": "PAGE"
+      "SEVERITY": "TICKET"
     },
     "conditions": [
       {
         "evaluator": {
           "params": [
-            0.0144
+            ${ERROR_RATE_THRESHOLD.threeday}
           ],
           "type": "gt"
         },
@@ -16,31 +16,8 @@
         },
         "query": {
           "params": [
-            "rate1Hour",
-            "1h",
-            "now"
-          ]
-        },
-        "reducer": {
-          "params": [],
-          "type": "sum"
-        },
-        "type": "query"
-      },
-      {
-        "evaluator": {
-          "params": [
-            0.006
-          ],
-          "type": "gt"
-        },
-        "operator": {
-          "type": "or"
-        },
-        "query": {
-          "params": [
-            "Rate6Hour",
-            "6h",
+            "rate",
+            "36h",
             "now"
           ]
         },
@@ -51,12 +28,12 @@
         "type": "query"
       }
     ],
-    "executionErrorState": "keep_state",
+    "executionErrorState": "alerting",
     "for": "5m",
     "frequency": "1m",
     "handler": 1,
-    "message": "Slo budget consumed in 1 or 6 hour exceeded the limit in Apigateway ${RESOURCE}",
-    "name": "Availability/${RESOURCE} alert ${ID}",
+    "message": "Error rate in 3 days exceeded the limit in Apigateway ${RESOURCE}",
+    "name": "Error Rate of 3 days/${RESOURCE} alert rate ${ID}",
     "noDataState": "no_data",
     "notifications": [
       {
@@ -66,15 +43,15 @@
   },
   "aliasColors": {},
   "dashLength": 10,
-  "datasource": "Caferio",
-  "description": "Display Error Rate for an ApiGateway and also alert about burn rate in 1or 6 hours",
+  "datasource": "${DATASOURCE}",
+  "description": "Display error rate for ApiGateway ${RESOURCE} and also alert about burn rate in 3 days",
   "fieldConfig": {
     "defaults": {},
     "overrides": []
   },
   "fill": 1,
   "gridPos": {
-    "h": 6,
+    "h": 7,
     "w": 8,
     "x": ${X},
     "y": ${Y}
@@ -104,39 +81,55 @@
     {
       "namespace": "",
       "metricName": "",
-      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"5XXError\" ', 'Sum', 3600))) /   SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"Count\" ', 'Sum', 3600)))",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"5XXError\" ', 'Sum', 259200))) /   SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"Count\" ', 'Sum', 259200)))",
       "dimensions": {},
       "region": "${REGION}",
-      "id": "",
-      "alias": "Error Rate 1 Hour",
+      "id": "errorrate",
+      "alias": "Error Rate 3D",
       "statistics": [
         "Average"
       ],
       "period": "",
       "hide": false,
       "matchExact": false,
-      "refId": "rate1Hour"
+      "refId": "rate"
     },
     {
       "namespace": "",
       "metricName": "",
-      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"5XXError\" ', 'Sum', 21600))) /   SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"Count\" ', 'Sum', 21600)))",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"Count\" ', 'Sum', 259200)))",
       "dimensions": {},
       "region": "${REGION}",
       "id": "",
-      "alias": "Error Rate 6 Hour",
+      "alias": "Total Request",
       "statistics": [
         "Average"
       ],
       "period": "",
-      "hide": false,
-      "matchExact": false,
-      "refId": "Rate6Hour"
+      "refId": "count",
+      "hide": true,
+      "matchExact": true
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"5XXError\" ', 'Sum', 259200)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Total Errors",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "refId": "errors",
+      "hide": true,
+      "matchExact": true
     }
   ],
   "thresholds": [
     {
-      "value": 0.0144,
+      "value": ${ERROR_RATE_THRESHOLD.threeday},
       "op": "gt",
       "visible": true,
       "fill": true,
@@ -145,7 +138,7 @@
     }
   ],
   "timeRegions": [],
-  "title": "ErrorRatePage/${RESOURCE}",
+  "title": "ErrorRate/${RESOURCE}",
   "tooltip": {
     "shared": true,
     "sort": 0,
@@ -185,7 +178,6 @@
   "dashes": false,
   "fillGradient": 0,
   "hiddenSeries": false,
-  "maxDataPoints": null,
   "percentage": false,
   "points": false,
   "stack": false,

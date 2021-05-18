@@ -45,7 +45,7 @@
     "overrides": []
   },
   "gridPos": {
-    "h": 6,
+    "h": 7,
     "w": 8,
     "x": ${X},
     "y": ${Y}
@@ -65,18 +65,18 @@
   "pluginVersion": "7.4.5",
   "targets": [
     {
-      "alias": "throttles",
+      "alias": "errors",
       "dimensions": {
         "FunctionName": "${RESOURCE}"
       },
       "expression": "",
-      "hide": false,
-      "id": "throttles",
+      "hide": true,
+      "id": "errors",
       "matchExact": true,
-      "metricName": "Throttles",
+      "metricName": "Errors",
       "namespace": "AWS/Lambda",
       "period": "",
-      "refId": "throttles",
+      "refId": "errors",
       "region": "${REGION}",
       "statistics": [
         "Sum"
@@ -101,16 +101,32 @@
       ]
     },
     {
-      "alias": "throttle",
+      "alias": "success",
       "dimensions": {},
-      "expression": "(throttles * 100) / invocations",
+      "expression": "invocations - errors",
       "hide": true,
-      "id": "throttle",
+      "id": "success",
       "matchExact": true,
       "metricName": "",
       "namespace": "AWS/Lambda",
       "period": "",
-      "refId": "throttle",
+      "refId": "success",
+      "region": "${REGION}",
+      "statistics": [
+        "Average"
+      ]
+    },
+    {
+      "alias": "",
+      "dimensions": {},
+      "expression": "(success * 100) / invocations",
+      "hide": false,
+      "id": "",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "",
+      "period": "",
+      "refId": "correctness",
       "region": "${REGION}",
       "statistics": [
         "Average"
@@ -119,6 +135,6 @@
   ],
   "timeFrom": null,
   "timeShift": null,
-  "title": "Throttle/${RESOURCE}",
+  "title": "Correctness/${RESOURCE}",
   "type": "timeseries"
 }

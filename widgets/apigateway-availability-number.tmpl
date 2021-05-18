@@ -2,30 +2,20 @@
   "datasource": "${DATASOURCE}",
   "fieldConfig": {
     "defaults": {
-      "custom": {},
       "thresholds": {
         "mode": "absolute",
-        "steps": [
-          {
-            "color": "green",
-            "value": null
-          },
-          {
-            "color": "red",
-            "value": 80
-          }
-        ]
+        "steps": []
       },
       "mappings": [],
       "color": {
-        "mode": "thresholds"
+        "mode": "continuous-RdYlGr"
       },
-      "unit": "short"
+      "unit": "percent"
     },
     "overrides": []
   },
   "gridPos": {
-    "h": 6,
+    "h": 7,
     "w": 8,
     "x": ${X},
     "y": ${Y}
@@ -35,7 +25,7 @@
     "reduceOptions": {
       "values": false,
       "calcs": [
-        "lastNotNull"
+        "mean"
       ],
       "fields": ""
     },
@@ -46,55 +36,57 @@
     "graphMode": "area",
     "justifyMode": "auto"
   },
-  "pluginVersion": "7.4.5",
+  "pluginVersion": "7.5.5",
   "targets": [
     {
-      "alias": "started",
+      "alias": "count",
       "dimensions": {
-        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+        "ApiName": "${RESOURCE}"
       },
       "expression": "",
       "hide": true,
-      "id": "started",
+      "id": "count",
       "matchExact": true,
-      "metricName": "ExecutionsStarted",
-      "namespace": "AWS/States",
+      "metricName": "Count",
+      "namespace": "AWS/ApiGateway",
       "period": "",
-      "refId": "started",
+      "queryType": "randomWalk",
+      "refId": "count",
       "region": "${REGION}",
       "statistics": [
         "Sum"
       ]
     },
     {
-      "alias": "succeeded",
+      "alias": "error",
       "dimensions": {
-        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+        "ApiName": "${RESOURCE}"
       },
       "expression": "",
       "hide": true,
-      "id": "succeeded",
+      "id": "error",
       "matchExact": true,
-      "metricName": "ExecutionsSucceeded",
-      "namespace": "AWS/States",
+      "metricName": "5XXError",
+      "namespace": "AWS/ApiGateway",
       "period": "",
-      "refId": "succeeded",
+      "queryType": "randomWalk",
+      "refId": "error",
       "region": "${REGION}",
       "statistics": [
-        "Average"
+        "Sum"
       ]
     },
     {
-      "alias": "",
+      "alias": "percentage",
       "dimensions": {},
-      "expression": "(succeeded * 100) / started",
+      "expression": "ABS(((error * 100) / count) - 100)",
       "hide": false,
-      "id": "",
+      "id": "percentage",
       "matchExact": true,
       "metricName": "",
       "namespace": "",
       "period": "",
-      "refId": "correctness",
+      "refId": "percentage",
       "region": "${REGION}",
       "statistics": [
         "Average"
@@ -103,6 +95,7 @@
   ],
   "timeFrom": null,
   "timeShift": null,
-  "title": "CorrectnesSM/${RESOURCE}",
+  "title": "Availability/${RESOURCE}",
+  "transformations": [],
   "type": "stat"
 }

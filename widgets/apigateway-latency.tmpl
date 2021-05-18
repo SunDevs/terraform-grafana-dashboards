@@ -1,0 +1,224 @@
+{
+  "aliasColors": {},
+  "dashLength": 10,
+  "datasource": "${DATASOURCE}",
+  "editable": true,
+  "fieldConfig": {
+    "defaults": {
+      "links": []
+    },
+    "overrides": []
+  },
+  "fill": 1,
+  "grid": {},
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "legend": {
+    "alignAsTable": true,
+    "avg": true,
+    "current": true,
+    "max": true,
+    "min": true,
+    "show": true,
+    "sort": "current",
+    "sortDesc": true,
+    "total": false,
+    "values": true
+  },
+  "lines": true,
+  "linewidth": 2,
+  "links": [],
+  "nullPointMode": "null as zero",
+  "options": {
+    "alertThreshold": true
+  },
+  "pluginVersion": "7.5.5",
+  "pointradius": 5,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "namespace": "AWS/ApiGateway",
+      "metricName": "Latency",
+      "expression": "",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "",
+      "alias": "{{metric}} {{stat}}",
+      "statistics": [
+        "p99"
+      ],
+      "period": "",
+      "application": {
+        "filter": ""
+      },
+      "functions": [],
+      "group": {
+        "filter": ""
+      },
+      "highResolution": false,
+      "host": {
+        "filter": ""
+      },
+      "item": {
+        "filter": ""
+      },
+      "matchExact": true,
+      "mode": 0,
+      "options": {
+        "showDisabledItems": false
+      },
+      "refId": "Latencyp99"
+    },
+    {
+      "namespace": "AWS/ApiGateway",
+      "metricName": "Latency",
+      "expression": "",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "",
+      "alias": "{{metric}} {{stat}}",
+      "statistics": [
+        "p90"
+      ],
+      "period": "",
+      "application": {
+        "filter": ""
+      },
+      "functions": [],
+      "group": {
+        "filter": ""
+      },
+      "highResolution": false,
+      "host": {
+        "filter": ""
+      },
+      "item": {
+        "filter": ""
+      },
+      "matchExact": true,
+      "mode": 0,
+      "options": {
+        "showDisabledItems": false
+      },
+      "refId": "Latencyp90"
+    },
+    {
+      "namespace": "AWS/ApiGateway",
+      "metricName": "Latency",
+      "expression": "",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "",
+      "alias": "{{metric}} {{stat}}",
+      "statistics": [
+        "Maximum"
+      ],
+      "period": "",
+      "application": {
+        "filter": ""
+      },
+      "functions": [],
+      "group": {
+        "filter": ""
+      },
+      "hide": true,
+      "highResolution": false,
+      "host": {
+        "filter": ""
+      },
+      "item": {
+        "filter": ""
+      },
+      "matchExact": true,
+      "mode": 0,
+      "options": {
+        "showDisabledItems": false
+      },
+      "refId": "LatencyMax"
+    }
+  ],
+  "thresholds": [
+    {
+      "$$hashKey": "object:964",
+      "colorMode": "warning",
+      "fill": true,
+      "line": true,
+      "op": "gt",
+      "value": 400,
+      "yaxis": "left"
+    },
+    {
+      "$$hashKey": "object:970",
+      "colorMode": "critical",
+      "fill": true,
+      "line": true,
+      "op": "gt",
+      "value": 800,
+      "yaxis": "left"
+    }
+  ],
+  "timeRegions": [],
+  "title": "Latency / ${RESOURCE}",
+  "tooltip": {
+    "msResolution": false,
+    "shared": true,
+    "sort": 0,
+    "value_type": "cumulative"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "$$hashKey": "object:262",
+      "format": "ms",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": 0,
+      "show": true
+    },
+    {
+      "$$hashKey": "object:263",
+      "format": "ms",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": 0,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "bars": false,
+  "dashes": false,
+  "error": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null
+}

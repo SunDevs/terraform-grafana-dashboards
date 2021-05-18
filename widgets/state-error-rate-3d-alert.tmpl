@@ -7,7 +7,7 @@
       {
         "evaluator": {
           "params": [
-            0.001
+            ${ERROR_RATE_THRESHOLD.threeday}
           ],
           "type": "gt"
         },
@@ -32,8 +32,8 @@
     "for": "5m",
     "frequency": "1m",
     "handler": 1,
-    "message": "Slo budget consumed in 3 days exceeded the limit in Lambda ${RESOURCE}",
-    "name": "Availability/${RESOURCE} alert ${ID}",
+    "message": "Slo budget consumed in 3 days exceeded the limit in Lambda ${RESOURCE}. \n\nMetrics can't exceed:\n72 hour: ${ERROR_RATE_THRESHOLD.threeday}\n",
+    "name": "ErrorRate/${RESOURCE} alert ${ID}",
     "noDataState": "no_data",
     "notifications": [
       {
@@ -41,9 +41,8 @@
       }
     ]
   },
-  "bars": false,
+  "aliasColors": {},
   "dashLength": 10,
-  "dashes": false,
   "datasource": "${DATASOURCE}",
   "description": "Display error rate for lambda ${RESOURCE} and also alert about burn rate in 3 days",
   "fieldConfig": {
@@ -53,14 +52,12 @@
     "overrides": []
   },
   "fill": 1,
-  "fillGradient": 0,
   "gridPos": {
     "h": 6,
     "w": 8,
     "x": ${X},
     "y": ${Y}
   },
-  "hiddenSeries": false,
   "id": ${ID},
   "legend": {
     "avg": false,
@@ -77,36 +74,32 @@
   "options": {
     "alertThreshold": true
   },
-  "percentage": false,
   "pluginVersion": "7.5.3",
   "pointradius": 2,
-  "points": false,
   "renderer": "flot",
   "seriesOverrides": [],
   "spaceLength": 10,
-  "stack": false,
-  "steppedLine": false,
   "targets": [
     {
-      "alias": "Error Rate 36 Hour",
-      "dimensions": {},
-      "expression": "SUM(SEARCH('{AWS/Lambda,FunctionName} FunctionName=\"${RESOURCE}\" MetricName=\"Errors\"', 'Sum',  129600)) /  SUM(SEARCH('{AWS/Lambda,FunctionName} FunctionName=\"${RESOURCE}\" MetricName=\"Invocations\"', 'Sum',  129600))",
-      "hide": false,
-      "id": "rate36hour",
-      "matchExact": true,
-      "metricName": "",
       "namespace": "",
-      "period": "",
-      "refId": "rate36Hour",
-      "region": "us-west-1",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsTimedOut OR ExecutionThrottled OR ExecutionsFailed OR ExecutionsAborted', 'Sum', 259200))) / SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsStarted', 'Sum', 259200)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "rate36hour",
+      "alias": "Error Rate 36 Hour",
       "statistics": [
         "Average"
-      ]
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "rate36Hour"
     }
   ],
   "thresholds": [
     {
-      "value": 0.001,
+      "value": ${ERROR_RATE_THRESHOLD.threeday},
       "op": "gt",
       "visible": true,
       "fill": true,
@@ -114,9 +107,7 @@
       "colorMode": "critical"
     }
   ],
-  "timeFrom": null,
   "timeRegions": [],
-  "timeShift": null,
   "title": "ErrorRate/${RESOURCE}",
   "tooltip": {
     "shared": true,
@@ -153,5 +144,14 @@
     "align": false,
     "alignLevel": null
   },
-  "aliasColors": {}
+  "bars": false,
+  "dashes": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null
 }

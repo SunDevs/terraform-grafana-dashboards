@@ -1,0 +1,128 @@
+{
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      }
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "sum"
+      ],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "text": {},
+    "textMode": "auto",
+    "colorMode": "value",
+    "graphMode": "none",
+    "justifyMode": "auto"
+  },
+  "pluginVersion": "7.5.5",
+  "repeatDirection": "v",
+  "targets": [
+    {
+      "namespace": "AWS/ApiGateway",
+      "metricName": "Count",
+      "expression": "",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "count",
+      "alias": "count",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "queryType": "randomWalk",
+      "refId": "count"
+    },
+    {
+      "namespace": "AWS/ApiGateway",
+      "metricName": "5XXError",
+      "expression": "",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "error",
+      "alias": "error",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "queryType": "randomWalk",
+      "refId": "error"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "(count * (100 - $SLO)) / 100",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "budget",
+      "alias": "Error budget",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "budget"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "(budget - error)",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "remaining",
+      "alias": "Remaining Budget",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "remainingBudget %"
+    }
+  ],
+  "title": "RemainingRequestBudget/${RESOURCE}",
+  "transformations": [],
+  "type": "stat",
+  "repeat": null,
+  "timeFrom": null,
+  "timeShift": null,
+  "description": "Requests with errors remaining"
+}

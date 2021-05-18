@@ -1,0 +1,85 @@
+{
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": []
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      }
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "sum"
+      ],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "text": {},
+    "textMode": "auto",
+    "colorMode": "value",
+    "graphMode": "none",
+    "justifyMode": "auto"
+  },
+  "pluginVersion": "7.5.5",
+  "targets": [
+    {
+      "namespace": "AWS/ApiGateway",
+      "metricName": "Count",
+      "expression": "",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "count",
+      "alias": "count",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "queryType": "randomWalk",
+      "refId": "count"
+    },
+    {
+      "namespace": "AWS/ApiGateway",
+      "metricName": "Count",
+      "expression": "count * (100 - $SLO) / 100",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "budget",
+      "alias": "budget",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "queryType": "randomWalk",
+      "refId": "budget"
+    }
+  ],
+  "title": "ErrorBudget/${RESOURCE}",
+  "transformations": [],
+  "type": "stat",
+  "timeFrom": null,
+  "timeShift": null,
+  "description": "Request with error available"
+}

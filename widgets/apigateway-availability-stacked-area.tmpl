@@ -4,16 +4,15 @@
   "dashLength": 10,
   "dashes": false,
   "datasource": "${DATASOURCE}",
+  "description": "Display Availability for ApiGateway ${RESOURCE}",
   "fieldConfig": {
-    "defaults": {
-      "custom": {}
-    },
+    "defaults": {},
     "overrides": []
   },
   "fill": 1,
   "fillGradient": 0,
   "gridPos": {
-    "h": 6,
+    "h": 7,
     "w": 8,
     "x": ${X},
     "y": ${Y}
@@ -21,13 +20,14 @@
   "hiddenSeries": false,
   "id": ${ID},
   "legend": {
-    "avg": false,
-    "current": false,
-    "max": false,
-    "min": false,
+    "alignAsTable": true,
+    "avg": true,
+    "current": true,
+    "max": true,
+    "min": true,
     "show": true,
-    "total": false,
-    "values": false
+    "total": true,
+    "values": true
   },
   "lines": true,
   "linewidth": 1,
@@ -36,11 +36,27 @@
     "alertThreshold": true
   },
   "percentage": false,
-  "pluginVersion": "7.4.5",
+  "pluginVersion": "7.5.5",
   "pointradius": 2,
   "points": false,
   "renderer": "flot",
-  "seriesOverrides": [],
+  "seriesOverrides": [
+    {
+      "$$hashKey": "object:704",
+      "alias": "count",
+      "lines": false
+    },
+    {
+      "$$hashKey": "object:711",
+      "alias": "error",
+      "lines": false
+    },
+    {
+      "$$hashKey": "object:759",
+      "alias": "availability",
+      "yaxis": 2
+    }
+  ],
   "spaceLength": 10,
   "stack": false,
   "steppedLine": false,
@@ -51,7 +67,7 @@
         "ApiName": "${RESOURCE}"
       },
       "expression": "",
-      "hide": true,
+      "hide": false,
       "id": "count",
       "matchExact": true,
       "metricName": "Count",
@@ -70,7 +86,7 @@
         "ApiName": "${RESOURCE}"
       },
       "expression": "",
-      "hide": true,
+      "hide": false,
       "id": "error",
       "matchExact": true,
       "metricName": "5XXError",
@@ -84,43 +100,36 @@
       ]
     },
     {
-      "alias": "budget",
+      "alias": "availability",
       "dimensions": {},
-      "expression": "(count * 0.1) / 100",
-      "hide": true,
-      "id": "budget",
-      "matchExact": true,
-      "metricName": "",
-      "namespace": "",
-      "period": "",
-      "refId": "budget",
-      "region": "${REGION}",
-      "statistics": [
-        "Average"
-      ]
-    },
-    {
-      "alias": "Remaining Budget",
-      "dimensions": {},
-      "expression": "100-( error*100 ) / budget",
+      "expression": "ABS(((error * 100) / count) - 100)",
       "hide": false,
-      "id": "remaining",
+      "id": "availability",
       "matchExact": true,
       "metricName": "",
       "namespace": "",
       "period": "",
-      "refId": "remainingBudget",
+      "refId": "percentage",
       "region": "${REGION}",
       "statistics": [
         "Average"
       ]
     }
   ],
-  "thresholds": [],
+  "thresholds": [
+    {
+      "$$hashKey": "object:813",
+      "colorMode": "critical",
+      "fill": true,
+      "line": true,
+      "op": "gt",
+      "yaxis": "left"
+    }
+  ],
   "timeFrom": null,
   "timeRegions": [],
   "timeShift": null,
-  "title": "RemainingBudget/${RESOURCE}",
+  "title": "Availability/${RESOURCE}",
   "tooltip": {
     "shared": true,
     "sort": 0,
@@ -136,7 +145,8 @@
   },
   "yaxes": [
     {
-      "format": "short",
+      "$$hashKey": "object:674",
+      "format": "none",
       "label": null,
       "logBase": 1,
       "max": null,
@@ -144,7 +154,8 @@
       "show": true
     },
     {
-      "format": "short",
+      "$$hashKey": "object:675",
+      "format": "percent",
       "label": null,
       "logBase": 1,
       "max": null,
