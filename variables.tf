@@ -30,12 +30,12 @@ variable "ACCOUNT" {
 
 variable "DASHBOARD" {
   type    = string
-  default = "./widgets/dashboard-grafana.tmpl"
+  default = "widgets/dashboard-grafana.tmpl"
 }
 
 variable "PANEL" {
   type    = string
-  default = "./widgets/panel-row.tmpl"
+  default = "widgets/panel-row.tmpl"
 }
 
 variable "UID" {
@@ -67,18 +67,49 @@ variable "STATE" {
 variable "WIDGET_COMPONENT" {
   type        = list(string)
   description = "List of templates to generate panel of apigateway."
-  default     = []
+  default = [
+    "widgets/apigateway-latency.tmpl",
+    "widgets/apigateway-remaining-budget-stacked-area.tmpl",
+    "widgets/apigateway-availability-stacked-area.tmpl",
+    "widgets/apigateway-availability-number.tmpl",
+    "widgets/apigateway-error-rate-3d-alert.tmpl",
+    "widgets/apigateway-error-rate-alert.tmpl",
+    "widgets/apigateway-error-budget-number.tmpl",
+    "widgets/apigateway-remaining-budget-number.tmpl",
+    "widgets/apigateway-request-budget-number.tmpl"
+  ]
 }
 
 variable "WIDGET_SUBCOMPONENT" {
   type        = list(string)
   description = "List of templates to generate panel of lambda funtions."
-  default     = []
+  default = [
+    "widgets/lambda-throttle.tmpl",
+    "widgets/lambda-latency.tmpl",
+    "widgets/lambda-availability-number.tmpl",
+    "widgets/lambda-availability-stacked-area.tmpl",
+    "widgets/lambda-error-rate-alert.tmpl",
+    "widgets/lambda-error-rate-3d-alert.tmpl"
+  ]
 }
 
 variable "WIDGET_STATE" {
   type        = list(string)
   description = "List of templates to generate panel of statemachines."
-  default     = []
+  default = [
+    "widgets/state-correctness-number.tmpl",
+    "widgets/state-correctness-stacked-area.tmpl",
+    "widgets/state-throttle.tmpl",
+    "widgets/state-error-budget-number.tmpl",
+    "widgets/state-remaining-budget-number.tmpl",
+    "widgets/state-remaining-budget-stacked-area.tmpl",
+    "widgets/state-error-rate-3d-alert.tmpl",
+    "widgets/state-error-rate-alert.tmpl"
+  ]
 }
 
+variable "SLO" {
+  type        = number
+  description = "Level of SLO in your service example: 99.9"
+  default     = 99.9
+}
