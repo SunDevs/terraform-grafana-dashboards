@@ -11,7 +11,7 @@ Copy and paste into your Terraform configuration the folder **example** , insert
 
 module "dashboard-grafana" {
   source       = "SunDevs/dashboard/grafana"
-  version      = "2.0.x"
+  version      = "x.x.x"
   REGION       = "AWS_DEFAULT_REGION"
   ACCOUNT      = "AWS_EXTERNAL_ACCOUNT"
   PROVIDER_URL = "PROVIDER_URL"
