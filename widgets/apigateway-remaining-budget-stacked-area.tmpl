@@ -73,7 +73,7 @@
     {
       "namespace": "",
       "metricName": "",
-      "expression": "ABS(((budget-error)*100 ) / budget)",
+      "expression": "((budget-error)*100 ) / budget",
       "dimensions": {},
       "region": "${REGION}",
       "id": "remaining",
@@ -153,7 +153,8 @@
     {
       "$$hashKey": "object:456",
       "alias": "Remaining Budget",
-      "yaxis": 2
+      "yaxis": 2,
+      "nullPointMode": "connected"
     },
     {
       "$$hashKey": "object:641",
