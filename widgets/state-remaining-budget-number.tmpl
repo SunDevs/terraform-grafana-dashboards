@@ -1,0 +1,185 @@
+{
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": []
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      },
+      "unit": "percent"
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "text": {},
+    "textMode": "auto",
+    "colorMode": "value",
+    "graphMode": "none",
+    "justifyMode": "auto"
+  },
+  "pluginVersion": "7.5.5",
+  "targets": [
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsStarted",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "total",
+      "alias": "total",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "queryType": "randomWalk",
+      "refId": "total"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionThrottled",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "error1",
+      "alias": "error1",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "error1"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsAborted",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "error2",
+      "alias": "error2",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "error2"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsFailed",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "error3",
+      "alias": "error3",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "error3"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsTimedOut",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "error4",
+      "alias": "error4",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "error4"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "error1+error2+error3+error4",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "errors",
+      "alias": "errors",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "errors"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "(total * (100 - $SLO) ) / 100",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "budget",
+      "alias": "budget",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "budget"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "100 - ((errors * 100 ) / budget)",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "remaining",
+      "alias": "remaining",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "remaining"
+    }
+  ],
+  "title": "RemainingBudget/${RESOURCE}",
+  "transformations": [],
+  "type": "stat",
+  "timeFrom": null,
+  "timeShift": null,
+  "description": "PERCENTAGE OF REMAINING BUDGET"
+}

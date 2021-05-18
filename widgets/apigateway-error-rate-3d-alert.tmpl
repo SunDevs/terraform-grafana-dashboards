@@ -1,0 +1,187 @@
+{
+  "alert": {
+    "alertRuleTags": {
+      "SEVERITY": "TICKET"
+    },
+    "conditions": [
+      {
+        "evaluator": {
+          "params": [
+            ${ERROR_RATE_THRESHOLD.threeday}
+          ],
+          "type": "gt"
+        },
+        "operator": {
+          "type": "and"
+        },
+        "query": {
+          "params": [
+            "rate",
+            "36h",
+            "now"
+          ]
+        },
+        "reducer": {
+          "params": [],
+          "type": "sum"
+        },
+        "type": "query"
+      }
+    ],
+    "executionErrorState": "alerting",
+    "for": "5m",
+    "frequency": "1m",
+    "handler": 1,
+    "message": "Error rate in 3 days exceeded the limit in Apigateway ${RESOURCE}",
+    "name": "Error Rate of 3 days/${RESOURCE} alert rate ${ID}",
+    "noDataState": "no_data",
+    "notifications": [
+      {
+        "uid": "${UID}"
+      }
+    ]
+  },
+  "aliasColors": {},
+  "dashLength": 10,
+  "datasource": "${DATASOURCE}",
+  "description": "Display error rate for ApiGateway ${RESOURCE} and also alert about burn rate in 3 days",
+  "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+  },
+  "fill": 1,
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "legend": {
+    "avg": false,
+    "current": false,
+    "max": false,
+    "min": false,
+    "show": true,
+    "total": false,
+    "values": false
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "alertThreshold": true
+  },
+  "pluginVersion": "7.5.3",
+  "pointradius": 2,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"5XXError\" ', 'Sum', 259200))) /   SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"Count\" ', 'Sum', 259200)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "errorrate",
+      "alias": "Error Rate 3D",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": false,
+      "refId": "rate"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"Count\" ', 'Sum', 259200)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Total Request",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "refId": "count",
+      "hide": true,
+      "matchExact": true
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' \"AWS/ApiGateway\" ApiName=\"${RESOURCE}\" MetricName=\"5XXError\" ', 'Sum', 259200)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Total Errors",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "refId": "errors",
+      "hide": true,
+      "matchExact": true
+    }
+  ],
+  "thresholds": [
+    {
+      "value": ${ERROR_RATE_THRESHOLD.threeday},
+      "op": "gt",
+      "visible": true,
+      "fill": true,
+      "line": true,
+      "colorMode": "critical"
+    }
+  ],
+  "timeRegions": [],
+  "title": "ErrorRate/${RESOURCE}",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    },
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "bars": false,
+  "dashes": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null
+}

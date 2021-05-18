@@ -1,0 +1,197 @@
+{
+  "aliasColors": {},
+  "dashLength": 10,
+  "datasource": "${DATASOURCE}",
+  "description": "Display Availability for lambda ${RESOURCE} ",
+  "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+  },
+  "fill": 1,
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "legend": {
+    "alignAsTable": true,
+    "avg": true,
+    "current": true,
+    "max": true,
+    "min": true,
+    "rightSide": false,
+    "show": true,
+    "total": true,
+    "values": true
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "alertThreshold": true
+  },
+  "pluginVersion": "7.5.5",
+  "pointradius": 2,
+  "renderer": "flot",
+  "seriesOverrides": [
+    {
+      "$$hashKey": "object:1409",
+      "alias": "Error Rate",
+      "lines": false
+    },
+    {
+      "$$hashKey": "object:1416",
+      "alias": "errors",
+      "lines": false
+    },
+    {
+      "$$hashKey": "object:1423",
+      "alias": "success_rate",
+      "lines": false
+    },
+    {
+      "$$hashKey": "object:1622",
+      "alias": "success percentage",
+      "yaxis": 2
+    }
+  ],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "Errors",
+      "expression": "",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "errors",
+      "alias": "errors",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "errors"
+    },
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "Invocations",
+      "expression": "",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "invocations",
+      "alias": "invocations",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "invocations"
+    },
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "",
+      "expression": "errors/invocations",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "error_rate",
+      "alias": "Error Rate",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "error_rate"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "1 - error_rate",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "success_rate",
+      "alias": "success_rate",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "success_rate"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "success_rate * 100",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "success_percentage",
+      "alias": "success percentage",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "success_percentage"
+    }
+  ],
+  "thresholds": [],
+  "timeRegions": [],
+  "title": "Availability/${RESOURCE}",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "$$hashKey": "object:390",
+      "format": "none",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    },
+    {
+      "$$hashKey": "object:391",
+      "format": "percent",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": true,
+    "alignLevel": null
+  },
+  "bars": false,
+  "dashes": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null
+}

@@ -1,0 +1,180 @@
+{
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "alertThreshold": true
+  },
+  "pluginVersion": "7.5.5",
+  "targets": [
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsStarted",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "started",
+      "alias": "started",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "started"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsSucceeded",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "succeeded",
+      "alias": "succeeded",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "succeeded"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "(succeeded * 100) / started",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "correctness",
+      "alias": "correctness",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "correctness"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "started - succeeded",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "other",
+      "alias": "No succeeded",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "nosucceeded"
+    }
+  ],
+  "title": "CorrectnesSM/${RESOURCE}",
+  "type": "graph",
+  "renderer": "flot",
+  "yaxes": [
+    {
+      "label": null,
+      "show": true,
+      "logBase": 1,
+      "min": null,
+      "max": null,
+      "format": "none",
+      "$$hashKey": "object:320"
+    },
+    {
+      "label": null,
+      "show": true,
+      "logBase": 1,
+      "min": null,
+      "max": null,
+      "format": "percent",
+      "$$hashKey": "object:321"
+    }
+  ],
+  "xaxis": {
+    "show": true,
+    "mode": "time",
+    "name": null,
+    "values": [],
+    "buckets": null
+  },
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "lines": true,
+  "fill": 1,
+  "linewidth": 1,
+  "dashLength": 10,
+  "spaceLength": 10,
+  "pointradius": 2,
+  "legend": {
+    "show": true,
+    "values": true,
+    "min": true,
+    "max": true,
+    "current": true,
+    "total": true,
+    "avg": true,
+    "alignAsTable": true
+  },
+  "nullPointMode": "null",
+  "tooltip": {
+    "value_type": "individual",
+    "shared": true,
+    "sort": 0
+  },
+  "aliasColors": {},
+  "seriesOverrides": [
+    {
+      "$$hashKey": "object:400",
+      "alias": "started",
+      "lines": false
+    },
+    {
+      "$$hashKey": "object:407",
+      "alias": "succeeded",
+      "lines": false
+    },
+    {
+      "$$hashKey": "object:414",
+      "alias": "correctness",
+      "nullPointMode": "connected",
+      "yaxis": 2
+    },
+    {
+      "$$hashKey": "object:1063",
+      "alias": "No succeeded",
+      "lines": false
+    }
+  ],
+  "thresholds": [],
+  "timeRegions": [],
+  "timeFrom": null,
+  "timeShift": null,
+  "fillGradient": 0,
+  "dashes": false,
+  "hiddenSeries": false,
+  "points": false,
+  "bars": false,
+  "stack": false,
+  "percentage": false,
+  "steppedLine": false
+}

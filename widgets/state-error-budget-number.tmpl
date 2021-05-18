@@ -1,0 +1,83 @@
+{
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {
+      "custom": {},
+      "thresholds": {
+        "mode": "absolute",
+        "steps": []
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      }
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "sum"
+      ],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "text": {},
+    "textMode": "auto",
+    "colorMode": "value",
+    "graphMode": "none",
+    "justifyMode": "auto"
+  },
+  "pluginVersion": "7.4.5",
+  "targets": [
+    {
+      "alias": "total",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "expression": "",
+      "hide": true,
+      "id": "total",
+      "matchExact": true,
+      "metricName": "ExecutionsStarted",
+      "namespace": "AWS/States",
+      "period": "",
+      "queryType": "randomWalk",
+      "refId": "total",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    },
+    {
+      "alias": "budget",
+      "dimensions": {},
+      "expression": "(total * (100 - $SLO) ) / 100",
+      "hide": false,
+      "id": "budget",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "",
+      "period": "",
+      "queryType": "randomWalk",
+      "refId": "budget",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    }
+  ],
+  "timeFrom": null,
+  "timeShift": null,
+  "title": "ErrorBudgetSM/${RESOURCE}",
+  "transformations": [],
+  "type": "stat"
+}

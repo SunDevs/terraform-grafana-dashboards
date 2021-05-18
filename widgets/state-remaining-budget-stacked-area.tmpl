@@ -1,0 +1,254 @@
+{
+  "aliasColors": {},
+  "dashLength": 10,
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {},
+    "overrides": []
+  },
+  "fill": 1,
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "legend": {
+    "avg": false,
+    "current": false,
+    "max": false,
+    "min": false,
+    "show": true,
+    "total": true,
+    "values": false
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "alertThreshold": true
+  },
+  "pluginVersion": "7.5.2",
+  "pointradius": 2,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsStarted",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "total",
+      "alias": "total",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "queryType": "randomWalk",
+      "refId": "total"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "(total * (100 - $SLO) ) / 100",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "budget",
+      "alias": "budget",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "queryType": "randomWalk",
+      "refId": "budget"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionThrottled",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "error1",
+      "alias": "error1",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "error1"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsAborted",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "error2",
+      "alias": "error2",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "error2"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsFailed",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "error3",
+      "alias": "error3",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "error3"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsTimedOut",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "error4",
+      "alias": "error4",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "error4"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "error1+error2+error3+error4",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "errors",
+      "alias": "errors",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "errors"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "100 - ((errors * 100 ) / budget)",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "remaining",
+      "alias": "remaining",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "remaining"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsTimedOut OR ExecutionThrottled OR ExecutionsFailed OR ExecutionsAborted', 'Sum', 60))) / SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsStarted', 'Sum', 60)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "rate",
+      "alias": "rate",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "refId": "rate",
+      "hide": true,
+      "matchExact": true
+    }
+  ],
+  "thresholds": [
+    {
+      "value": 0.0144,
+      "op": "gt",
+      "visible": true,
+      "fill": true,
+      "line": true,
+      "colorMode": "critical"
+    }
+  ],
+  "timeRegions": [],
+  "title": "RemainingBudget/${RESOURCE}",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "transformations": [],
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    },
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "description": "Display Remaining Budget for StateMachine ${RESOURCE} and also alert about burn rate in 1 hour or 6 hours",
+  "bars": false,
+  "dashes": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null
+}

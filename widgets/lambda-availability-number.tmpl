@@ -1,0 +1,130 @@
+{
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": []
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      },
+      "unit": "percent"
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "mean"
+      ],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "text": {},
+    "textMode": "auto",
+    "colorMode": "value",
+    "graphMode": "area",
+    "justifyMode": "auto"
+  },
+  "pluginVersion": "7.5.5",
+  "targets": [
+    {
+      "alias": "errors",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "expression": "",
+      "hide": true,
+      "id": "errors",
+      "matchExact": true,
+      "metricName": "Errors",
+      "namespace": "AWS/Lambda",
+      "period": "",
+      "refId": "errors",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    },
+    {
+      "alias": "invocations",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "expression": "",
+      "hide": true,
+      "id": "invocations",
+      "matchExact": true,
+      "metricName": "Invocations",
+      "namespace": "AWS/Lambda",
+      "period": "",
+      "refId": "invocations",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    },
+    {
+      "alias": "Error Rate",
+      "dimensions": {},
+      "expression": "errors/invocations",
+      "hide": true,
+      "id": "error_rate",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "AWS/Lambda",
+      "period": "",
+      "refId": "error_rate",
+      "region": "${REGION}",
+      "statistics": [
+        "Average"
+      ]
+    },
+    {
+      "alias": "success_rate",
+      "dimensions": {},
+      "expression": "1 - error_rate",
+      "hide": true,
+      "id": "success_rate",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "",
+      "period": "",
+      "refId": "success_rate",
+      "region": "${REGION}",
+      "statistics": [
+        "Average"
+      ]
+    },
+    {
+      "alias": "success_percentage",
+      "dimensions": {},
+      "expression": "success_rate * 100",
+      "hide": false,
+      "id": "success_percentage",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "",
+      "period": "",
+      "refId": "success_percentage",
+      "region": "${REGION}",
+      "statistics": [
+        "Average"
+      ]
+    }
+  ],
+  "timeFrom": null,
+  "timeShift": null,
+  "title": "Availability/${RESOURCE}",
+  "type": "stat"
+}

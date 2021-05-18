@@ -1,0 +1,188 @@
+{
+  "aliasColors": {},
+  "dashLength": 10,
+  "datasource": "${DATASOURCE}",
+  "editable": true,
+  "fieldConfig": {
+    "defaults": {
+      "links": []
+    },
+    "overrides": []
+  },
+  "fill": 1,
+  "grid": {},
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "legend": {
+    "alignAsTable": true,
+    "avg": true,
+    "current": true,
+    "max": true,
+    "min": true,
+    "show": true,
+    "sort": "current",
+    "sortDesc": true,
+    "total": false,
+    "values": true
+  },
+  "lines": true,
+  "linewidth": 2,
+  "links": [],
+  "nullPointMode": "null as zero",
+  "options": {
+    "alertThreshold": true
+  },
+  "pluginVersion": "7.5.5",
+  "pointradius": 5,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "Duration",
+      "expression": "",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "",
+      "alias": "{{metric}} {{stat}}",
+      "statistics": [
+        "p99"
+      ],
+      "period": "",
+      "application": {
+        "filter": ""
+      },
+      "functions": [],
+      "group": {
+        "filter": ""
+      },
+      "highResolution": false,
+      "host": {
+        "filter": ""
+      },
+      "item": {
+        "filter": ""
+      },
+      "matchExact": true,
+      "mode": 0,
+      "options": {
+        "showDisabledItems": false
+      },
+      "refId": "Durationp99"
+    },
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "Duration",
+      "expression": "",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "",
+      "alias": "{{metric}} {{stat}}",
+      "statistics": [
+        "p90"
+      ],
+      "period": "",
+      "application": {
+        "filter": ""
+      },
+      "functions": [],
+      "group": {
+        "filter": ""
+      },
+      "highResolution": false,
+      "host": {
+        "filter": ""
+      },
+      "item": {
+        "filter": ""
+      },
+      "matchExact": true,
+      "mode": 0,
+      "options": {
+        "showDisabledItems": false
+      },
+      "refId": "Latencyp90"
+    }
+  ],
+  "thresholds": [
+    {
+      "value": 400,
+      "colorMode": "warning",
+      "op": "gt",
+      "fill": true,
+      "line": true,
+      "yaxis": "left",
+      "$$hashKey": "object:316"
+    },
+    {
+      "value": 900,
+      "colorMode": "critical",
+      "op": "gt",
+      "fill": true,
+      "line": true,
+      "yaxis": "left",
+      "$$hashKey": "object:322"
+    }
+  ],
+  "timeRegions": [],
+  "title": "Latency / ${RESOURCE}",
+  "tooltip": {
+    "msResolution": false,
+    "shared": true,
+    "sort": 0,
+    "value_type": "cumulative"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "$$hashKey": "object:262",
+      "format": "ms",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": 0,
+      "show": true
+    },
+    {
+      "$$hashKey": "object:263",
+      "format": "ms",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": 0,
+      "show": true
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "bars": false,
+  "dashes": false,
+  "error": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null
+}

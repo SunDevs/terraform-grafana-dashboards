@@ -1,0 +1,101 @@
+{
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": []
+      },
+      "mappings": [],
+      "color": {
+        "mode": "continuous-RdYlGr"
+      },
+      "unit": "percent"
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "mean"
+      ],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "text": {},
+    "textMode": "auto",
+    "colorMode": "value",
+    "graphMode": "area",
+    "justifyMode": "auto"
+  },
+  "pluginVersion": "7.5.5",
+  "targets": [
+    {
+      "alias": "count",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "expression": "",
+      "hide": true,
+      "id": "count",
+      "matchExact": true,
+      "metricName": "Count",
+      "namespace": "AWS/ApiGateway",
+      "period": "",
+      "queryType": "randomWalk",
+      "refId": "count",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    },
+    {
+      "alias": "error",
+      "dimensions": {
+        "ApiName": "${RESOURCE}"
+      },
+      "expression": "",
+      "hide": true,
+      "id": "error",
+      "matchExact": true,
+      "metricName": "5XXError",
+      "namespace": "AWS/ApiGateway",
+      "period": "",
+      "queryType": "randomWalk",
+      "refId": "error",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    },
+    {
+      "alias": "percentage",
+      "dimensions": {},
+      "expression": "ABS(((error * 100) / count) - 100)",
+      "hide": false,
+      "id": "percentage",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "",
+      "period": "",
+      "refId": "percentage",
+      "region": "${REGION}",
+      "statistics": [
+        "Average"
+      ]
+    }
+  ],
+  "timeFrom": null,
+  "timeShift": null,
+  "title": "Availability/${RESOURCE}",
+  "transformations": [],
+  "type": "stat"
+}

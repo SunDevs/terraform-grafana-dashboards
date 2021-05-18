@@ -1,0 +1,123 @@
+{
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      },
+      "unit": "short"
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "mean"
+      ],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "text": {},
+    "textMode": "auto",
+    "colorMode": "value",
+    "graphMode": "area",
+    "justifyMode": "auto"
+  },
+  "pluginVersion": "7.5.1",
+  "targets": [
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "Errors",
+      "expression": "",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "errors",
+      "alias": "errors",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "errors"
+    },
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "Invocations",
+      "expression": "",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "invocations",
+      "alias": "invocations",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "invocations"
+    },
+    {
+      "namespace": "AWS/Lambda",
+      "metricName": "",
+      "expression": "invocations - errors",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "success",
+      "alias": "success",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "success"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "(success * 100) / invocations",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "correctness"
+    }
+  ],
+  "title": "Correctness/${RESOURCE}",
+  "type": "stat",
+  "timeFrom": null,
+  "timeShift": null
+}

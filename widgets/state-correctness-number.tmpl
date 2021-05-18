@@ -1,0 +1,109 @@
+{
+  "datasource": "${DATASOURCE}",
+  "description": "Correctness Percentage",
+  "fieldConfig": {
+    "defaults": {
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      },
+      "mappings": [],
+      "color": {
+        "mode": "thresholds"
+      },
+      "unit": "percent"
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "reduceOptions": {
+      "values": false,
+      "calcs": [
+        "mean"
+      ],
+      "fields": ""
+    },
+    "orientation": "auto",
+    "text": {},
+    "textMode": "auto",
+    "colorMode": "value",
+    "graphMode": "area",
+    "justifyMode": "auto"
+  },
+  "pluginVersion": "7.5.5",
+  "targets": [
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsStarted",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "started",
+      "alias": "started",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "started"
+    },
+    {
+      "namespace": "AWS/States",
+      "metricName": "ExecutionsSucceeded",
+      "expression": "",
+      "dimensions": {
+        "StateMachineArn": "arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}"
+      },
+      "region": "${REGION}",
+      "id": "succeeded",
+      "alias": "succeeded",
+      "statistics": [
+        "Sum"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "succeeded"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "(succeeded * 100) / started",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "correctness"
+    }
+  ],
+  "title": "Correctnes/${RESOURCE}",
+  "transformations": [],
+  "type": "stat",
+  "timeFrom": null,
+  "timeShift": null
+}

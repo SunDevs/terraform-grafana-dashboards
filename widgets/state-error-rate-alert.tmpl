@@ -1,0 +1,235 @@
+{
+  "alert": {
+    "alertRuleTags": {
+      "SEVERITY": "PAGE"
+    },
+    "conditions": [
+      {
+        "evaluator": {
+          "params": [
+            ${ERROR_RATE_THRESHOLD.onehour}
+          ],
+          "type": "gt"
+        },
+        "operator": {
+          "type": "and"
+        },
+        "query": {
+          "params": [
+            "rate1Hour",
+            "1h",
+            "now"
+          ]
+        },
+        "reducer": {
+          "params": [],
+          "type": "sum"
+        },
+        "type": "query"
+      },
+      {
+        "evaluator": {
+          "params": [
+            ${ERROR_RATE_THRESHOLD.sixhour}
+          ],
+          "type": "gt"
+        },
+        "operator": {
+          "type": "or"
+        },
+        "query": {
+          "params": [
+            "rate6Hour",
+            "6h",
+            "now"
+          ]
+        },
+        "reducer": {
+          "params": [],
+          "type": "sum"
+        },
+        "type": "query"
+      }
+    ],
+    "executionErrorState": "alerting",
+    "for": "5m",
+    "frequency": "1m",
+    "handler": 1,
+    "message": "Error rate in 1 or 6 hour exceeded the limit in statemachine ${RESOURCE}.\n\nMetrics can't exceed:\n1 hour: ${ERROR_RATE_THRESHOLD.onehour}\n6 hour: ${ERROR_RATE_THRESHOLD.sixhour}",
+    "name": "ErrorRate/${RESOURCE} alert 87",
+    "noDataState": "no_data",
+    "notifications": [
+      {
+        "uid": "${UID}"
+      }
+    ]
+  },
+  "aliasColors": {
+    "Errors": "dark-red",
+    "Rate 1 Hour": "dark-blue",
+    "Rate 6 Hour": "dark-orange"
+  },
+  "dashLength": 10,
+  "datasource": "test",
+  "description": "Error Rate for statemachine ${RESOURCE} and also alert about burn rate in 1 or 6 hours",
+  "fieldConfig": {
+    "defaults": {
+      "unit": "short"
+    },
+    "overrides": []
+  },
+  "fill": 1,
+  "gridPos": {
+    "h": 6,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "legend": {
+    "avg": true,
+    "current": true,
+    "max": true,
+    "min": true,
+    "show": true,
+    "total": false,
+    "values": true,
+    "alignAsTable": true
+  },
+  "lines": true,
+  "linewidth": 1,
+  "nullPointMode": "null",
+  "options": {
+    "alertThreshold": true
+  },
+  "pluginVersion": "7.5.5",
+  "pointradius": 2,
+  "renderer": "flot",
+  "seriesOverrides": [],
+  "spaceLength": 10,
+  "targets": [
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsTimedOut OR ExecutionThrottled OR ExecutionsFailed OR ExecutionsAborted', 'Sum', 3600))) / SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsStarted', 'Sum', 3600)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Error Rate 1 Hour",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "rate1Hour"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsTimedOut OR ExecutionThrottled OR ExecutionsFailed OR ExecutionsAborted', 'Sum', 21600))) / SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsStarted', 'Sum', 21600)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Error Rate 6 Hour",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": false,
+      "matchExact": true,
+      "refId": "rate6Hour"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsTimedOut OR ExecutionThrottled OR ExecutionsFailed OR ExecutionsAborted', 'Sum', 60)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "Errors",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "errors"
+    },
+    {
+      "namespace": "",
+      "metricName": "",
+      "expression": "SUM(REMOVE_EMPTY(SEARCH(' {AWS/States,StateMachineArn} StateMachineArn=\"arn:aws:states:${REGION}:${ACCOUNT}:stateMachine:${RESOURCE}\" ExecutionsStarted', 'Sum', 60)))",
+      "dimensions": {},
+      "region": "${REGION}",
+      "id": "",
+      "alias": "started",
+      "statistics": [
+        "Average"
+      ],
+      "period": "",
+      "hide": true,
+      "matchExact": true,
+      "refId": "started"
+    }
+  ],
+  "thresholds": [
+    {
+      "value": ${ERROR_RATE_THRESHOLD.onehour},
+      "op": "gt",
+      "visible": true,
+      "fill": true,
+      "line": true,
+      "colorMode": "critical"
+    }
+  ],
+  "timeRegions": [],
+  "title": "ErrorRate/${RESOURCE}",
+  "tooltip": {
+    "shared": true,
+    "sort": 0,
+    "value_type": "individual"
+  },
+  "type": "graph",
+  "xaxis": {
+    "buckets": null,
+    "mode": "time",
+    "name": null,
+    "show": true,
+    "values": []
+  },
+  "yaxes": [
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true,
+      "$$hashKey": "object:1209"
+    },
+    {
+      "format": "short",
+      "label": null,
+      "logBase": 1,
+      "max": null,
+      "min": null,
+      "show": true,
+      "$$hashKey": "object:1210"
+    }
+  ],
+  "yaxis": {
+    "align": false,
+    "alignLevel": null
+  },
+  "bars": false,
+  "dashes": false,
+  "fillGradient": 0,
+  "hiddenSeries": false,
+  "percentage": false,
+  "points": false,
+  "stack": false,
+  "steppedLine": false,
+  "timeFrom": null,
+  "timeShift": null
+}

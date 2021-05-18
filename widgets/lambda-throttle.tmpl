@@ -1,0 +1,124 @@
+{
+  "datasource": "${DATASOURCE}",
+  "fieldConfig": {
+    "defaults": {
+      "custom": {
+        "drawStyle": "line",
+        "lineInterpolation": "linear",
+        "barAlignment": 0,
+        "lineWidth": 1,
+        "fillOpacity": 10,
+        "gradientMode": "none",
+        "spanNulls": true,
+        "showPoints": "never",
+        "pointSize": 5,
+        "axisPlacement": "auto",
+        "axisLabel": "",
+        "scaleDistribution": {
+          "type": "linear"
+        },
+        "hideFrom": {
+          "tooltip": false,
+          "graph": false,
+          "legend": false
+        }
+      },
+      "color": {
+        "mode": "palette-classic"
+      },
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      },
+      "mappings": [],
+      "unit": "short"
+    },
+    "overrides": []
+  },
+  "gridPos": {
+    "h": 7,
+    "w": 8,
+    "x": ${X},
+    "y": ${Y}
+  },
+  "id": ${ID},
+  "options": {
+    "tooltipOptions": {
+      "mode": "single"
+    },
+    "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "calcs": []
+    },
+    "graph": {}
+  },
+  "pluginVersion": "7.4.5",
+  "targets": [
+    {
+      "alias": "throttles",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "expression": "",
+      "hide": false,
+      "id": "throttles",
+      "matchExact": true,
+      "metricName": "Throttles",
+      "namespace": "AWS/Lambda",
+      "period": "",
+      "refId": "throttles",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    },
+    {
+      "alias": "invocations",
+      "dimensions": {
+        "FunctionName": "${RESOURCE}"
+      },
+      "expression": "",
+      "hide": true,
+      "id": "invocations",
+      "matchExact": true,
+      "metricName": "Invocations",
+      "namespace": "AWS/Lambda",
+      "period": "",
+      "refId": "invocations",
+      "region": "${REGION}",
+      "statistics": [
+        "Sum"
+      ]
+    },
+    {
+      "alias": "throttle",
+      "dimensions": {},
+      "expression": "(throttles * 100) / invocations",
+      "hide": true,
+      "id": "throttle",
+      "matchExact": true,
+      "metricName": "",
+      "namespace": "AWS/Lambda",
+      "period": "",
+      "refId": "throttle",
+      "region": "${REGION}",
+      "statistics": [
+        "Average"
+      ]
+    }
+  ],
+  "timeFrom": null,
+  "timeShift": null,
+  "title": "Throttle/${RESOURCE}",
+  "type": "timeseries"
+}
