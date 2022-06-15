@@ -56,7 +56,7 @@
     "frequency": "1m",
     "handler": 1,
     "message": "Error rate in 1 or 6 hour exceeded the limit in Apigateway ${RESOURCE}.\n\nMetrics can't exceed:\n1 hour: ${ERROR_RATE_THRESHOLD.onehour} \n hour: ${ERROR_RATE_THRESHOLD.sixhour}",
-    "name": "Error Rate /${RESOURCE} alert ${ID}",
+    "name": "Error Rate ${RESOURCE} alert ${ID}",
     "noDataState": "no_data",
     "notifications": [
       {
@@ -146,7 +146,7 @@
     }
   ],
   "timeRegions": [],
-  "title": "ErrorRatePage/${RESOURCE}",
+  "title": "ErrorRatePage ${RESOURCE}",
   "tooltip": {
     "shared": true,
     "sort": 0,
