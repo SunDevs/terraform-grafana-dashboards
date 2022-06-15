@@ -33,7 +33,7 @@
     "frequency": "1m",
     "handler": 1,
     "message": "Error rate in 3 days exceeded the limit in Lambda ${RESOURCE}. \n\nMetrics can't exceed:\n72 hour: ${ERROR_RATE_THRESHOLD.threeday}",
-    "name": "ErrorRate/${RESOURCE} alert ${ID}",
+    "name": "ErrorRate ${RESOURCE} alert ${ID}",
     "noDataState": "no_data",
     "notifications": [
       {
@@ -117,7 +117,7 @@
   "timeFrom": null,
   "timeRegions": [],
   "timeShift": null,
-  "title": "ErrorRate/${RESOURCE}",
+  "title": "ErrorRate ${RESOURCE}",
   "tooltip": {
     "shared": true,
     "sort": 0,

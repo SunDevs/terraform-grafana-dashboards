@@ -56,7 +56,7 @@
     "frequency": "1m",
     "handler": 1,
     "message": "Error rate in 1 or 6 hour exceeded the limit in statemachine ${RESOURCE}.\n\nMetrics can't exceed:\n1 hour: ${ERROR_RATE_THRESHOLD.onehour}\n6 hour: ${ERROR_RATE_THRESHOLD.sixhour}",
-    "name": "ErrorRate/${RESOURCE} alert 87",
+    "name": "ErrorRate ${RESOURCE} alert ${ID}",
     "noDataState": "no_data",
     "notifications": [
       {
@@ -184,7 +184,7 @@
     }
   ],
   "timeRegions": [],
-  "title": "ErrorRate/${RESOURCE}",
+  "title": "ErrorRate ${RESOURCE}",
   "tooltip": {
     "shared": true,
     "sort": 0,

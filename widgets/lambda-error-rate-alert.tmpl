@@ -55,8 +55,8 @@
     "for": "5m",
     "frequency": "1m",
     "handler": 1,
-    "message": "Error rate in 1 or 6 hours exceeded the limit in Lambda ${RESOURCE}.\n\nMetrics can't exceed:\n1 hour: ${ERROR_RATE_THRESHOLD.onehour}\n6 hour: ${ERROR_RATE_THRESHOLD.sixhour}",
-    "name": "ErrorRate/${RESOURCE} alert 34",
+    "message": "Error rate in 1 or 6 hours exceeded the limit in Lambda ${RESOURCE}.\n\nMetrics can't exceed:\n1 hour: ${ERROR_RATE_THRESHOLD.onehour} \n hour: ${ERROR_RATE_THRESHOLD.sixhour}",
+    "name": "${DATASOURCE} - ErrorRate ${RESOURCE} alert ${ID}",
     "noDataState": "no_data",
     "notifications": [
       {
@@ -86,14 +86,14 @@
   },
   "id": ${ID},
   "legend": {
+    "alignAsTable": true,
     "avg": true,
     "current": true,
     "max": true,
     "min": true,
     "show": true,
-    "total": false,
-    "values": true,
-    "alignAsTable": true
+    "total": true,
+    "values": true
   },
   "lines": true,
   "linewidth": 1,
@@ -101,10 +101,21 @@
   "options": {
     "alertThreshold": true
   },
-  "pluginVersion": "7.5.5",
+  "pluginVersion": "7.5.6",
   "pointradius": 2,
   "renderer": "flot",
-  "seriesOverrides": [],
+  "seriesOverrides": [
+    {
+      "$$hashKey": "object:114",
+      "alias": "errors",
+      "lines": false
+    },
+    {
+      "$$hashKey": "object:139",
+      "alias": "invocations",
+      "lines": false
+    }
+  ],
   "spaceLength": 10,
   "targets": [
     {
@@ -121,7 +132,7 @@
         "Sum"
       ],
       "period": "",
-      "hide": true,
+      "hide": false,
       "matchExact": true,
       "refId": "errors"
     },
@@ -139,7 +150,7 @@
         "Sum"
       ],
       "period": "",
-      "hide": true,
+      "hide": false,
       "matchExact": true,
       "refId": "invocations"
     },
@@ -187,7 +198,7 @@
     }
   ],
   "timeRegions": [],
-  "title": "Error Rate /${RESOURCE}",
+  "title": "Error Rate ${RESOURCE}",
   "tooltip": {
     "shared": true,
     "sort": 0,

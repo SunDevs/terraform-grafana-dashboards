@@ -33,7 +33,7 @@
     "frequency": "1m",
     "handler": 1,
     "message": "Slo budget consumed in 3 days exceeded the limit in Lambda ${RESOURCE}. \n\nMetrics can't exceed:\n72 hour: ${ERROR_RATE_THRESHOLD.threeday}\n",
-    "name": "ErrorRate/${RESOURCE} alert ${ID}",
+    "name": "ErrorRate ${RESOURCE} alert ${ID}",
     "noDataState": "no_data",
     "notifications": [
       {
@@ -108,7 +108,7 @@
     }
   ],
   "timeRegions": [],
-  "title": "ErrorRate/${RESOURCE}",
+  "title": "ErrorRate ${RESOURCE}",
   "tooltip": {
     "shared": true,
     "sort": 0,
